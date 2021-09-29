@@ -65,6 +65,12 @@ public class Location implements Serializable {
     @JsonIgnore
     @ManyToMany
     private Collection<Terrain> terrainCollection;
+    @JoinTable(name = "utilise_2", joinColumns = {
+            @JoinColumn(name = "id_location", referencedColumnName = "id_location")}, inverseJoinColumns = {
+            @JoinColumn(name = "id_materiel", referencedColumnName = "id_materiel")})
+    @JsonIgnore
+    @ManyToMany
+    private Collection<Materiel> materielCollection;
     @JoinColumn(name = "id_client", referencedColumnName = "id_client")
     @JsonIgnore
     @ManyToOne(optional = false)
@@ -162,6 +168,14 @@ public class Location implements Serializable {
 
     public void setUtilise2Collection(Collection<Utilise2> utilise2Collection) {
         this.utilise2Collection = utilise2Collection;
+    }
+
+    public Collection<Materiel> getMaterielCollection() {
+        return materielCollection;
+    }
+
+    public void setMaterielCollection(Collection<Materiel> materielCollection) {
+        this.materielCollection = materielCollection;
     }
 
 //    @Override

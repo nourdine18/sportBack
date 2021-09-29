@@ -9,6 +9,6 @@ public interface Type_PaiementService {
     TypePaiement addType_paiement(TypePaiement type_paiement);
     Set<TypePaiement> findAll();
     TypePaiement findByNomTypePaiement(String nomTypePaiement);
-    TypePaiement updateType_paiement(TypePaiement type_paiement);
+    TypePaiement updateTypePaiement(TypePaiement type_paiement);
     void deleteType_paiement(Long id);
 }

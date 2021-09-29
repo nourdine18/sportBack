@@ -96,9 +96,13 @@ public class TypeClientRessource {
 
     @PutMapping(path = "updateType_client/{idTypeClient}")
     public ResponseEntity<?> updateType_client(@PathVariable("idTypeClient") Long idTypeClient, @RequestBody TypeClient typeClient){
-        TypeClient typeClientUpdated = type_clientService.updateType_client(typeClient);
-        if (typeClientUpdated != null){
+        TypeClient typeClientList = repository.findByNomTypeClient(typeClient.getNomTypeClient());
+
+
+        if (idTypeClient != null && typeClientList == null){
+            TypeClient typeClientUpdated = type_clientService.updateType_client(typeClient);
             return new ResponseEntity<>(typeClientUpdated,HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>("Ce type de client n'existe pas", HttpStatus.CONFLICT);
         }

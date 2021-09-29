@@ -80,11 +80,12 @@ public class CommuneRessource {
     public ResponseEntity<?> updateCommune(@PathVariable("code_postal") Long code_postal, @RequestBody Commune commune){
         List<Commune> communeList = repository.findByCommuneName(commune.getCommuneName());
         System.out.println(communeList.size());
-        if (commune != null || (communeList.isEmpty())){
-            return new ResponseEntity<>("Cette commune n'existe pas", HttpStatus.CONFLICT);
-        } else {
+        if (commune != null && (communeList.isEmpty())){
             Commune communeUpdated = communeService.updateCommune(commune);
             return new ResponseEntity<>(communeUpdated,HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>("Cette commune n'existe pas", HttpStatus.CONFLICT);
         }
     }
 

@@ -65,11 +65,15 @@ public class TypePaiementRessource {
 
     @PutMapping(path = "updateType_paiement/{idTypePaie}")
     public ResponseEntity<?> updateType_paiement(@PathVariable("idTypePaie") Long idTypePaie, @RequestBody TypePaiement typePaiement){
-        TypePaiement typePaiementUpdated = typePaiementService.updateType_paiement(typePaiement);
-        if (typePaiementUpdated != null){
+        TypePaiement typePaiementExist = repository.findByNomTypePaiement(typePaiement.getNomTypePaiement());
+
+
+        if (idTypePaie != null && typePaiementExist == null){
+            TypePaiement typePaiementUpdated = typePaiementService.updateTypePaiement(typePaiement);
             return new ResponseEntity<>(typePaiementUpdated,HttpStatus.OK);
+
         } else {
-            return new ResponseEntity<>("Ce type de paiement n'existe pas", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ce type de client n'existe pas", HttpStatus.CONFLICT);
         }
     }
 
