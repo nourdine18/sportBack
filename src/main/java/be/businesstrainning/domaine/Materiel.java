@@ -36,7 +36,7 @@ public class Materiel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
-    @Column(name = "id_mat")
+    @Column(name = "id_materiel")
     private Long idMat;
     @Basic(optional = false)
     @NotNull

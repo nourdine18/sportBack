@@ -34,7 +34,7 @@ public class CommuneRessource {
         Commune commune = repository.findByCodePostal(communes.getCodePostal());
         if (commune == null){
             repository.save(communes);
-            return "Hi " + communes.getCodePostal() + " your Registration process successfully completed";
+            return communes.getCodePostal() + " a bien été ajouté";
         }
         else{
             return "ce code postal existe déjà";
@@ -78,6 +78,7 @@ public class CommuneRessource {
 
     @PutMapping(path = "updateCommune/{code_postal}")
     public ResponseEntity<?> updateCommune(@PathVariable("code_postal") Long code_postal, @RequestBody Commune commune){
+        //ICI T'as un bon example, si je me trompe pas TypeClient tu devais le modifier et faire comme ici, tu me met un doute je check un truc
         List<Commune> communeList = repository.findByCommuneName(commune.getCommuneName());
         System.out.println(communeList.size());
         if (commune != null && (communeList.isEmpty())){

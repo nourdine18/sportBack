@@ -35,7 +35,7 @@ public class FournisseurRessource {
         System.out.println("taille " + fournisseur.size());
         if (fournisseur.isEmpty()) {
             repository.save(fournisseurs);
-            return "Hi " + fournisseurs.getNomFourni() + " your Registration process successfully completed";
+            return fournisseurs.getNomFourni() + " a bien été ajouté";
         } else {
             return "ce fournisseur existe déjà";
         }
@@ -73,13 +73,20 @@ public class FournisseurRessource {
 
     @PutMapping(path = "updateFournisseur/{id_fourni}")
     public ResponseEntity<?> updateFournisseur(@PathVariable("id_fourni") Long id_fourni, @RequestBody Fournisseur fournisseur) {
-        Fournisseur fournisseurUpdated = fournisseurService.updateFournisseur(fournisseur);
-        if (fournisseurUpdated != null) {
+        fournisseur.setIdFourni(id_fourni);
+        System.out.println("ouuuuuuuuuuh");
+        System.out.println("-------------------------- " + id_fourni);
+        List<Fournisseur> fournisseurList = repository.findByNomFourni(fournisseur.getNomFourni());
+        System.out.println("------------------------- " + fournisseur.getNomFourni() + " " + fournisseur.getIdFourni());
+
+        if (fournisseur != null && fournisseurList.isEmpty()) {
+            Fournisseur fournisseurUpdated = fournisseurService.updateFournisseur(fournisseur);
             return new ResponseEntity<>(fournisseurUpdated, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Ce fournisseur n'existe pas", HttpStatus.CONFLICT);
         }
     }
+
 
     @DeleteMapping("/deleteFournisseur/{id_fourni}")
     public void deleteFournisseur(@PathVariable("id_fourni") Long id_fourni) {

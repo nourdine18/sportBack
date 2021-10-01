@@ -45,7 +45,7 @@ public class TypeClientRessource {
         TypeClient typeClient = repository.findByNomTypeClient((typeClients.getNomTypeClient()));
         if (typeClient == null){
             repository.save(typeClients);
-            return "Hi " + typeClients.getNomTypeClient() + " your Registration process successfully completed";
+            return typeClients.getNomTypeClient() + " a bien été ajouté";
         }
         else{
             return "ce type de client existe déjà";
@@ -96,17 +96,16 @@ public class TypeClientRessource {
 
     @PutMapping(path = "updateType_client/{idTypeClient}")
     public ResponseEntity<?> updateType_client(@PathVariable("idTypeClient") Long idTypeClient, @RequestBody TypeClient typeClient){
-        TypeClient typeClientList = repository.findByNomTypeClient(typeClient.getNomTypeClient());
+        TypeClient typeClient1 = repository.findByNomTypeClient(typeClient.getNomTypeClient());
 
-
-        if (idTypeClient != null && typeClientList == null){
+        if (typeClient != null && typeClient1 == null){
             TypeClient typeClientUpdated = type_clientService.updateType_client(typeClient);
             return new ResponseEntity<>(typeClientUpdated,HttpStatus.OK);
-
         } else {
             return new ResponseEntity<>("Ce type de client n'existe pas", HttpStatus.CONFLICT);
         }
     }
+
 
     @DeleteMapping("/deleteType_client/{idTypeClient}")
     public String deleteType_client(@PathVariable("idTypeClient") Long idTypeClient) {

@@ -39,7 +39,7 @@ public class MaterielRessource {
              }else{
                  //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
              }
-        return "Hi " + materiels.getNomMat() + " your Registration process successfully completed";
+        return materiels.getNomMat() + " a bien été ajouté";
     }
 
     @GetMapping("/findAll")
@@ -79,8 +79,8 @@ public class MaterielRessource {
     }
 
 
-    @PutMapping(path = "updateMateriel/{id_mat}")
-    public ResponseEntity<?> updateMateriel(@PathVariable("id_mat") Long id_Mat, @RequestBody Materiel materiel){
+    @PutMapping(path = "updateMateriel/{id_materiel}")
+    public ResponseEntity<?> updateMateriel(@PathVariable("id_materiel") Long id_materiel, @RequestBody Materiel materiel){
         Materiel materielUpdated = materielService.updateMateriel(materiel);
         if (materielUpdated != null){
             return new ResponseEntity<>(materielUpdated,HttpStatus.OK);
@@ -89,9 +89,9 @@ public class MaterielRessource {
         }
     }
 
-    @DeleteMapping("/deleteMateriel/{id_mat}")
-    public void deleteMateriel(@PathVariable("id_mat") Long id_mat){
-        materielService.deleteMateriel(id_mat);
+    @DeleteMapping("/deleteMateriel/{id_materiel}")
+    public void deleteMateriel(@PathVariable("id_materiel") Long id_materiel){
+        materielService.deleteMateriel(id_materiel);
     }
 
 }

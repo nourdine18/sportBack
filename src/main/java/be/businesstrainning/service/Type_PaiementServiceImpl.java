@@ -22,7 +22,6 @@ public class Type_PaiementServiceImpl implements Type_PaiementService{
     public TypePaiement addType_paiement(TypePaiement type_paiement) {
         TypePaiement typePaiements = iTypePaiementRepository.findByIdTypePaie(type_paiement.getIdTypePaie());
         if (typePaiements == null){
-            // retrier un terrain en stock
             iTypePaiementRepository.save(typePaiements);
         }
         else{
@@ -44,7 +43,7 @@ public class Type_PaiementServiceImpl implements Type_PaiementService{
     }
 
     @Override
-    public TypePaiement updateTypePaiement(TypePaiement type_paiement) {
+    public TypePaiement updateType_paiement(TypePaiement type_paiement) {
         TypePaiement typePaiementUpdate = iTypePaiementRepository.findByIdTypePaie(type_paiement.getIdTypePaie());
         if(type_paiement.getNomTypePaiement() != null && type_paiement.getNomTypePaiement() != typePaiementUpdate.getNomTypePaiement()){
             typePaiementUpdate.setNomTypePaiement(type_paiement.getNomTypePaiement());

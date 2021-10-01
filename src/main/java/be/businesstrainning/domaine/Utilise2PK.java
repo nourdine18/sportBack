@@ -17,7 +17,7 @@ public class Utilise2PK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_mat")
+    @Column(name = "id_materiel")
     private Long idMat;
     @Basic(optional = false)
     @NotNull

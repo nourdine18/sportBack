@@ -35,7 +35,7 @@ public class Utilise2 implements Serializable {
     @JsonIgnore
     @ManyToOne(optional = false)
     private Location location;
-    @JoinColumn(name = "id_mat", referencedColumnName = "id_mat", insertable = false, updatable = false)
+    @JoinColumn(name = "id_materiel", referencedColumnName = "id_materiel", insertable = false, updatable = false)
     @JsonIgnore
     @ManyToOne(optional = false)
     private Materiel materiel;

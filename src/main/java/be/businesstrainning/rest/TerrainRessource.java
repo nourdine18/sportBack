@@ -28,7 +28,7 @@ public class TerrainRessource {
     @PostMapping("/addTerrain")
         public String addTerrain(@RequestBody Terrain terrains) {
             repository.save(terrains);
-            return "Hi " + terrains.getTypeTerrain() + " your Registration process successfully completed";
+            return terrains.getTypeTerrain() + " a bien été ajouté";
         }
 
     @GetMapping("/findAll")

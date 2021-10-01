@@ -81,7 +81,7 @@ public class ClientRessource {
             } else {
                 //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
             }
-            return "Hi " + clients.getNomClient() + " your Registration process successfully completed";
+            return clients.getNomClient() + " a bien été ajouté";
         } else {
             return "ce client existe déjà";
         }
