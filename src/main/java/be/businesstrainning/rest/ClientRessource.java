@@ -126,7 +126,7 @@ public class ClientRessource {
     }
 
 
-    @PutMapping(path = "update/{idClient}")
+    @PutMapping(path = "updateClient/{idClient}")
     public ResponseEntity<?> updateClient(@PathVariable("idClient") Long idClient, @RequestBody Client client) {
         Client clientUpdated = clientService.updateClient(client);
         if (clientUpdated != null) {
