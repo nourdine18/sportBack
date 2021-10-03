@@ -44,29 +44,38 @@ public class LocationRessource {
     @PostMapping("/addLocation")
     public String addLocation(@RequestBody Location locations) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-            List<Terrain> terrainLouer = (List<Terrain>) repositoryTerrain.findByIdTerrain(locations.getTerrainCollection());
-            List<Materiel> materielUtiliser = (List<Materiel>) repositoryMateriel.findByIdMat(locations.getIdLocation());
-            Client clientLocation = repositoryClient.findByIdClient(locations.getIdClient().getIdClient());
-            TypePaiement typePaiement= new TypePaiement();
-            Paiement paiementLocation = new Paiement(locations.getMontantTotal(),locations.getDateLoc(), clientLocation,typePaiement);
-
-            if (terrainLouer != null && materielUtiliser != null && clientLocation != null && paiementLocation != null) {
-                locations.setTerrainCollection(terrainLouer);
-                locations.setMaterielCollection(materielUtiliser);
-                locations.setIdClient(clientLocation);
-                locations.setIdPaie(paiementLocation);
-                repositoryPaiement.save(paiementLocation);
-                repository.save(locations);
-            } else {
-                //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
-            }
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//
+//            List<Terrain> terrainLouer = (List<Terrain>) repositoryTerrain.findByIdTerrain(locations.getTerrainCollection());
+//            for (int)
+//            List<Materiel> materielUtiliser = (List<Materiel>) repositoryMateriel.findByIdMat(locations.getIdLocation());
+//            Client clientLocation = repositoryClient.findByIdClient(locations.getIdClient().getIdClient());
+//            TypePaiement typePaiement= new TypePaiement();
+//            Paiement paiementLocation = new Paiement(locations.getMontantTotal(),locations.getDateLoc(), clientLocation,typePaiement);
+//
+//            if (terrainLouer != null && materielUtiliser != null && clientLocation != null && paiementLocation != null) {
+//                locations.setTerrainCollection(terrainLouer);
+//                locations.setMaterielCollection(materielUtiliser);
+//                locations.setIdClient(clientLocation);
+//                locations.setIdPaie(paiementLocation);
+//                repositoryPaiement.save(paiementLocation);
+//                repository.save(locations);
+//            } else {
+//                //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
+//            }
             return "ce client existe déjà";
         }
 
     @GetMapping("/findAll")
     public Set<Location> findAll(){
+        Set<Location> location = locationService.findAll();
+        for(Location l:location){
+            for (Materiel m:l.getMaterielCollection()
+                 ) {
+                System.out.println(m);
+            }
+            System.out.println(l.getMaterielCollection().size());
+        }
         return locationService.findAll();
     }
 

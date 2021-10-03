@@ -6,26 +6,17 @@
 package be.businesstrainning.domaine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.Nullable;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
@@ -47,13 +38,13 @@ public class Location implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "heure_debut")
-    @Temporal(TemporalType.TIME)
-    private Date heureDebut;
+//    @Temporal(TemporalType.TIME)
+    private int heureDebut;
     @Basic(optional = false)
     @NotNull
     @Column(name = "heure_fin")
-    @Temporal(TemporalType.TIME)
-    private Date heureFin;
+//    @Temporal(TemporalType.TIME)
+    private int heureFin;
     @Basic(optional = false)
     @NotNull
     @Column(name = "montant_total")
@@ -61,26 +52,23 @@ public class Location implements Serializable {
     @JoinTable(name = "utilise_1", joinColumns = {
         @JoinColumn(name = "id_location", referencedColumnName = "id_location")}, inverseJoinColumns = {
         @JoinColumn(name = "id_terrain", referencedColumnName = "id_terrain")})
-    @JsonIgnore
     @ManyToMany
     private Collection<Terrain> terrainCollection;
     @JoinTable(name = "utilise_2", joinColumns = {
             @JoinColumn(name = "id_location", referencedColumnName = "id_location")}, inverseJoinColumns = {
             @JoinColumn(name = "id_materiel", referencedColumnName = "id_materiel")})
-    @JsonIgnore
     @ManyToMany
     private Collection<Materiel> materielCollection;
     @JoinColumn(name = "id_client", referencedColumnName = "id_client")
-    @JsonIgnore
     @ManyToOne(optional = false)
     private Client idClient;
     @JoinColumn(name = "id_paie", referencedColumnName = "id_paie")
-    @JsonIgnore
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Paiement idPaie;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
     private Collection<Utilise2> utilise2Collection;
+
 
     public Location() {
     }
@@ -89,12 +77,13 @@ public class Location implements Serializable {
         this.idLocation = idLocation;
     }
 
-    public Location(Long idLocation, Date dateLoc, Date heureDebut, Date heureFin, Integer montantTotal) {
+    public Location(Long idLocation, Date dateLoc, int heureDebut, int heureFin, Integer montantTotal, Client idClient) {
         this.idLocation = idLocation;
         this.dateLoc = dateLoc;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
         this.montantTotal = montantTotal;
+        this.idClient = idClient;
     }
 
     public Long getIdLocation() {
@@ -113,19 +102,19 @@ public class Location implements Serializable {
         this.dateLoc = dateLoc;
     }
 
-    public Date getHeureDebut() {
+    public int getHeureDebut() {
         return heureDebut;
     }
 
-    public void setHeureDebut(Date heureDebut) {
+    public void setHeureDebut(int heureDebut) {
         this.heureDebut = heureDebut;
     }
 
-    public Date getHeureFin() {
+    public int getHeureFin() {
         return heureFin;
     }
 
-    public void setHeureFin(Date heureFin) {
+    public void setHeureFin(int heureFin) {
         this.heureFin = heureFin;
     }
 
@@ -150,6 +139,7 @@ public class Location implements Serializable {
     }
 
     public void setIdClient(Client idClient) {
+
         this.idClient = idClient;
     }
 
@@ -177,6 +167,7 @@ public class Location implements Serializable {
         this.materielCollection = materielCollection;
     }
 
+
 //    @Override
 //    public int hashCode() {
 //        int hash = 0;
@@ -197,9 +188,68 @@ public class Location implements Serializable {
 //        return true;
 //    }
 
+    public String getDateAppBE() {
+        String tmp;
+
+        if (this.dateLoc == null)
+            tmp = "";
+        else
+        {
+            SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
+            tmp = dateParser.format(this.dateLoc);
+        }
+        return tmp;
+    }
+
+    public void setDateAppBE(String dateApp) {
+        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            this.dateLoc = dateParser.parse(dateApp);
+        } catch (ParseException ex) {
+            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+//
+//    public String getDateAppSQL() {
+//        String tmp;
+//
+//        if (this.dateLoc == null)
+//            tmp = "";
+//        else
+//        {
+//            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd");
+//            tmp = "'" + dateParser.format(this.dateLoc) + "'";
+//        }
+//        return tmp;
+//    }
+//
+//    public String getDateAppUS() {
+//        String tmp;
+//
+//        if (this.dateLoc == null)
+//            tmp = "";
+//        else
+//        {
+//            tmp = this.dateLoc.toString();
+//        }
+//        return tmp;
+//    }
+
+//    @Override
+//    public String toString() {
+//        return "be.businesstraining.domain.Location[ idLocation=" + idLocation + ", client"+ " ]";
+//    }
+
+
     @Override
     public String toString() {
-        return "be.businesstraining.domain.Location[ idLocation=" + idLocation + " ]";
+        return "Location{" +
+                "idLocation=" + idLocation +
+                ", dateLoc=" + dateLoc +
+                ", heureDebut=" + heureDebut +
+                ", heureFin=" + heureFin +
+                ", montantTotal=" + montantTotal +
+                ", idClient=" + idClient +
+                '}';
     }
-    
 }

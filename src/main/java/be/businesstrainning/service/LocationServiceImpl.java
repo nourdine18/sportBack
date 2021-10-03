@@ -79,10 +79,10 @@ public class LocationServiceImpl implements LocationService{
         if(location.getDateLoc() != null && location.getDateLoc() != locationUpdate.getDateLoc()){
             locationUpdate.setDateLoc(location.getDateLoc());
         }
-        if(location.getHeureDebut() != null && location.getHeureDebut() != locationUpdate.getHeureDebut()){
+        if(location.getHeureDebut() != 0 && location.getHeureDebut() != locationUpdate.getHeureDebut()){
             locationUpdate.setHeureDebut(location.getHeureDebut());
         }
-        if(location.getHeureFin() != null && location.getHeureFin() != locationUpdate.getHeureFin()){
+        if(location.getHeureFin() != 0 && location.getHeureFin() != locationUpdate.getHeureFin()){
             locationUpdate.setHeureFin(location.getHeureFin());
         }
         if(location.getMontantTotal() != null && location.getMontantTotal() != locationUpdate.getMontantTotal()){
