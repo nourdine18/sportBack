@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
@@ -65,7 +66,7 @@ public class ClientRessource {
 
 
 
-        Client client = clientRepository.findClientByNomClientAndPrenomClient(clients.getNomClient(), clients.getPrenomClient());
+        Client client = clientRepository.findByEmailClient(clients.getEmailClient());
 
         if (client == null) {
 
@@ -128,9 +129,15 @@ public class ClientRessource {
 
     @PutMapping(path = "updateClient/{idClient}")
     public ResponseEntity<?> updateClient(@PathVariable("idClient") Long idClient, @RequestBody Client client) {
+        Client clientExist = clientRepository.findByEmailClient(client.getEmailClient());
+        Commune commune = communeRepository.findByCodePostal(client.getCodePostal().getCodePostal());
+        TypeClient typeClient = typeClientRepository.findByIdTypeClient(client.getIdTypeClient().getIdTypeClient());
+
+        if (commune != null && typeClient != null) {
+            client.setIdTypeClient(typeClient);
+            client.setCodePostal(commune);
         Client clientUpdated = clientService.updateClient(client);
-        if (clientUpdated != null) {
-            return new ResponseEntity<>(clientUpdated, HttpStatus.OK);
+        return new ResponseEntity<>(clientUpdated, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Ce client n'existe pas", HttpStatus.CONFLICT);
         }

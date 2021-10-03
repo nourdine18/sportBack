@@ -1,19 +1,34 @@
 package be.businesstrainning.rest;
 
 import be.businesstrainning.domaine.*;
+import be.businesstrainning.repository.*;
 import be.businesstrainning.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/location")
 public class LocationRessource {
+
+    @Autowired
+    private ILocationRepository repository;
+    @Autowired
+    private ITerrainRepository repositoryTerrain;
+    @Autowired
+    private IMaterielRepository repositoryMateriel;
+    @Autowired
+    private IClientRepository repositoryClient;
+    @Autowired
+    private IPaiementRepository repositoryPaiement;
 
     private LocationService locationService;
     private ClientService clientService;
@@ -27,19 +42,28 @@ public class LocationRessource {
 
 
     @PostMapping("/addLocation")
-    public ResponseEntity<?> addLocation(@RequestBody Location locations){
-        Location location = null;
-        try {
-            location = locationService.addLocation(locations);
-            if(location != null){
-                return new ResponseEntity<>(location, HttpStatus.OK);
-            } else{
-                return new ResponseEntity<>("Cette location existe déjà dans la base de donnée !", HttpStatus.CONFLICT);
+    public String addLocation(@RequestBody Location locations) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+            List<Terrain> terrainLouer = (List<Terrain>) repositoryTerrain.findByIdTerrain(locations.getTerrainCollection());
+            List<Materiel> materielUtiliser = (List<Materiel>) repositoryMateriel.findByIdMat(locations.getIdLocation());
+            Client clientLocation = repositoryClient.findByIdClient(locations.getIdClient().getIdClient());
+            TypePaiement typePaiement= new TypePaiement();
+            Paiement paiementLocation = new Paiement(locations.getMontantTotal(),locations.getDateLoc(), clientLocation,typePaiement);
+
+            if (terrainLouer != null && materielUtiliser != null && clientLocation != null && paiementLocation != null) {
+                locations.setTerrainCollection(terrainLouer);
+                locations.setMaterielCollection(materielUtiliser);
+                locations.setIdClient(clientLocation);
+                locations.setIdPaie(paiementLocation);
+                repositoryPaiement.save(paiementLocation);
+                repository.save(locations);
+            } else {
+                //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
             }
-        }catch (Exception e){
-            return new ResponseEntity<>("Error : " + e.getMessage(), HttpStatus.SEE_OTHER);
+            return "ce client existe déjà";
         }
-    }
 
     @GetMapping("/findAll")
     public Set<Location> findAll(){

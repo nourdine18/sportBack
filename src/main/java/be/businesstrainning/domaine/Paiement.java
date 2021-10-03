@@ -70,6 +70,13 @@ public class Paiement implements Serializable {
         this.montant = montant;
         this.datePaie = datePaie;
     }
+    public Paiement(Integer montant, Date datePaie, Client client, TypePaiement typePaiement) {
+        this.montant = montant;
+        this.datePaie = datePaie;
+        this.idClient = client;
+        this.idTypePaie= typePaiement;
+    }
+
 
     public Long getIdPaie() {
         return idPaie;
