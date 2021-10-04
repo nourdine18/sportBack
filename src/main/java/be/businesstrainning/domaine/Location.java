@@ -65,7 +65,7 @@ public class Location implements Serializable {
     @JoinColumn(name = "id_paie", referencedColumnName = "id_paie")
     @OneToOne(optional = false)
     private Paiement idPaie;
-    @JsonIgnore
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
     private Collection<Utilise2> utilise2Collection;
 

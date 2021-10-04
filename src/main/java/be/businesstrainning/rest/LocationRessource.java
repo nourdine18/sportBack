@@ -44,6 +44,7 @@ public class LocationRessource {
     @PostMapping("/addLocation")
     public String addLocation(@RequestBody Location locations) {
 
+
 //        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 //
 //            List<Terrain> terrainLouer = (List<Terrain>) repositoryTerrain.findByIdTerrain(locations.getTerrainCollection());
@@ -78,6 +79,7 @@ public class LocationRessource {
         }
         return locationService.findAll();
     }
+
 
     @GetMapping("/findLocationById/{id_location}")
     public ResponseEntity<?>findLocationById(@PathVariable("id_location") Long id_location){
