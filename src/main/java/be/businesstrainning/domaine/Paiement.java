@@ -33,11 +33,10 @@ public class Paiement implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date datePaie;
     @JoinColumn(name = "id_client", referencedColumnName = "id_client")
-    @JsonIgnore
     @ManyToOne(optional = false)
     private Client idClient;
     @JoinColumn(name = "id_type_paie", referencedColumnName = "id_type_paie")
-    @JsonIgnore
+
     @ManyToOne(optional = false)
     private TypePaiement idTypePaie;
     @JsonIgnore

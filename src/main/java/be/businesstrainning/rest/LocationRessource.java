@@ -43,6 +43,7 @@ public class LocationRessource {
 
     @PostMapping("/addLocation")
     public String addLocation(@RequestBody Location locations) {
+// location ->
 
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
