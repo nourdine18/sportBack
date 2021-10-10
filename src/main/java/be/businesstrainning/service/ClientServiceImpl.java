@@ -81,15 +81,12 @@ public class ClientServiceImpl implements ClientService {
         }
         if(client.getCodePostal() != null) {
             if (client.getCodePostal().getCodePostal() != clientUpdate.getCodePostal().getCodePostal()) {
-                clientUpdate.getCodePostal().setCodePostal(client.getCodePostal().getCodePostal());
-            }
-            if (client.getCodePostal().getCommuneName() != clientUpdate.getCodePostal().getCommuneName()) {
-                clientUpdate.getCodePostal().setCommuneName(client.getCodePostal().getCommuneName());
+                clientUpdate.setCodePostal(client.getCodePostal());
             }
         }
         if(client.getIdTypeClient() != null){
             if(client.getIdTypeClient().getNomTypeClient() != clientUpdate.getIdTypeClient().getNomTypeClient()){
-                clientUpdate.getIdTypeClient().setNomTypeClient(client.getIdTypeClient().getNomTypeClient());
+                clientUpdate.setIdTypeClient(client.getIdTypeClient());
             }
         }
         iClientRepository.save(clientUpdate);

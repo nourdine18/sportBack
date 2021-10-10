@@ -76,7 +76,7 @@ public class PaiementServiceImpl implements PaiementService {
     @Override
     public void deletePaiement(Long id) {
 
-        Paiement paiement = iPaiementRepository.findByIdClient(id);
+        Paiement paiement = iPaiementRepository.findByIdPaie(id);
 
         if(null != paiement){
             iPaiementRepository.delete(paiement);

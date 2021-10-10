@@ -7,5 +7,6 @@ public interface IMaterielRepository extends JpaRepository<Materiel, Long> {
 
     Materiel findByNomMat(String nom);
     Materiel findByIdMat(Long id);
+    Materiel findMaterielByIdFourni(Long idMateriel);
 
 }

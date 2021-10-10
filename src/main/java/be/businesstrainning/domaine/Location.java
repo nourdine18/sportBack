@@ -22,6 +22,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "location")
+//@NamedQueries({
+        //@NamedQuery(name = "Location.findLocationByDateLoc", query = "SELECT l FROM Location l ORDER BY  l.dateLoc")})
+
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +51,7 @@ public class Location implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "montant_total")
-    private Integer montantTotal;
+    private int montantTotal;
     @JoinTable(name = "utilise_1", joinColumns = {
         @JoinColumn(name = "id_location", referencedColumnName = "id_location")}, inverseJoinColumns = {
         @JoinColumn(name = "id_terrain", referencedColumnName = "id_terrain")})
@@ -63,11 +66,12 @@ public class Location implements Serializable {
     @ManyToOne(optional = false)
     private Client idClient;
     @JoinColumn(name = "id_paie", referencedColumnName = "id_paie")
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     private Paiement idPaie;
 
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
-    private Collection<Utilise2> utilise2Collection;
+    private Collection<Utilise2> utilise2Collection;*/
 
 
     public Location() {
@@ -77,13 +81,16 @@ public class Location implements Serializable {
         this.idLocation = idLocation;
     }
 
-    public Location(Long idLocation, Date dateLoc, int heureDebut, int heureFin, Integer montantTotal, Client idClient) {
+    public Location(Long idLocation, Date dateLoc, int heureDebut, int heureFin, int montantTotal, Collection<Terrain> terrainCollection, Collection<Materiel> materielCollection, Client idClient, Paiement paiement) {
         this.idLocation = idLocation;
         this.dateLoc = dateLoc;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
         this.montantTotal = montantTotal;
+        this.terrainCollection = terrainCollection;
+        this.materielCollection = materielCollection;
         this.idClient = idClient;
+        this.idPaie = paiement;
     }
 
     public Long getIdLocation() {
@@ -118,11 +125,11 @@ public class Location implements Serializable {
         this.heureFin = heureFin;
     }
 
-    public Integer getMontantTotal() {
+    public int getMontantTotal() {
         return montantTotal;
     }
 
-    public void setMontantTotal(Integer montantTotal) {
+    public void setMontantTotal(int montantTotal) {
         this.montantTotal = montantTotal;
     }
 
@@ -151,14 +158,14 @@ public class Location implements Serializable {
         this.idPaie = idPaie;
     }
 
-    public Collection<Utilise2> getUtilise2Collection() {
+    /*public Collection<Utilise2> getUtilise2Collection() {
         return utilise2Collection;
     }
 
     public void setUtilise2Collection(Collection<Utilise2> utilise2Collection) {
         this.utilise2Collection = utilise2Collection;
     }
-
+*/
     public Collection<Materiel> getMaterielCollection() {
         return materielCollection;
     }
@@ -249,7 +256,10 @@ public class Location implements Serializable {
                 ", heureDebut=" + heureDebut +
                 ", heureFin=" + heureFin +
                 ", montantTotal=" + montantTotal +
+                ", terrainCollection=" + terrainCollection +
+                ", materielCollection=" + materielCollection +
                 ", idClient=" + idClient +
+                ", idPaie=" + idPaie +
                 '}';
     }
 }

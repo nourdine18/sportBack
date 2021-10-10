@@ -1,5 +1,6 @@
 package be.businesstrainning.service;
 
+import be.businesstrainning.domaine.Client;
 import be.businesstrainning.domaine.Utilise1;
 import be.businesstrainning.repository.IUtilise1Repository;
 
@@ -23,14 +24,25 @@ public class Utilise1ServiceImpl implements Utilise1Service{
 
     @Override
     public Set<Utilise1> findAll() {
-        return new HashSet<>(utilise1Service.findAll());
+        return new HashSet<>(iUtilise1Repository.findAll());
     }
 
     @Override
     public Utilise1 updateUtilise1(Utilise1 utilise1) {
-        return null;
+        Utilise1 utilise1Update = iUtilise1Repository.findByLocationAndTerrain(utilise1.getLocation(), utilise1.getTerrain());
+        if (utilise1.getLocation() != null){
+            if(utilise1.getLocation().getDateLoc() != utilise1Update.getLocation().getDateLoc()){
+                utilise1Update.getLocation().setDateLoc(utilise1.getLocation().getDateLoc());
+            }
+            if(utilise1.getLocation().getHeureDebut() != utilise1Update.getLocation().getHeureDebut()){
+                utilise1Update.getLocation().setHeureDebut(utilise1.getLocation().getHeureDebut());
+            }
+            if(utilise1.getLocation().getHeureFin() != utilise1Update.getLocation().getHeureFin()){
+                utilise1Update.getLocation().setHeureFin(utilise1.getLocation().getHeureFin());
+            }
+        }
+        iUtilise1Repository.save(utilise1Update);
+        return utilise1Update;
     }
-
-
 
 }

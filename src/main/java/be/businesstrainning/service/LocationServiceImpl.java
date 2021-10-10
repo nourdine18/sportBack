@@ -4,11 +4,11 @@ import be.businesstrainning.domaine.Location;
 import be.businesstrainning.repository.IClientRepository;
 import be.businesstrainning.repository.ILocationRepository;
 import be.businesstrainning.repository.IPaiementRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class LocationServiceImpl implements LocationService{
@@ -37,8 +37,13 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
-    public Set<Location> findAll() {
-        return new HashSet<>(iLocationRepository.findAll());
+    public HashSet<Location> findAll(Sort date_loc) {
+        return new HashSet<>(iLocationRepository.findAllByOrderByIdLocationAsc());
+    }
+
+    @Override
+    public HashSet<Location> findLocationByDateLoc(Date dateLocation) {
+        return new HashSet<>(iLocationRepository.findLocationByDateLoc(dateLocation));
     }
 
     @Override
@@ -47,14 +52,9 @@ public class LocationServiceImpl implements LocationService{
         return location;
     }
 
-    @Override
-    public Location findLocationByDate(Date dateLoc) {
-        Location location = iLocationRepository.findLocationByDateLoc(dateLoc);
-        return location;
-    }
 
     @Override
-    public Location findLocationByDateAndHeureDebutAndFin(Date dateLoc, Date heureDebut, Date heureFin) {
+    public Location findLocationByDateAndHeureDebutAndFin(Date dateLoc, int heureDebut, int heureFin) {
         Location location = iLocationRepository.findLocationByDateLocAndHeureDebutAndHeureFin(dateLoc, heureDebut, heureFin);
         return location;
     }
@@ -85,7 +85,7 @@ public class LocationServiceImpl implements LocationService{
         if(location.getHeureFin() != 0 && location.getHeureFin() != locationUpdate.getHeureFin()){
             locationUpdate.setHeureFin(location.getHeureFin());
         }
-        if(location.getMontantTotal() != null && location.getMontantTotal() != locationUpdate.getMontantTotal()){
+        if(location.getMontantTotal() != 0 && location.getMontantTotal() != locationUpdate.getMontantTotal()){
             locationUpdate.setMontantTotal(location.getMontantTotal());
         }
         if(location.getIdClient() != null){

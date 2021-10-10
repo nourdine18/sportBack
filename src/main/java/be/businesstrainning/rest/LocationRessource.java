@@ -4,15 +4,14 @@ import be.businesstrainning.domaine.*;
 import be.businesstrainning.repository.*;
 import be.businesstrainning.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -43,34 +42,33 @@ public class LocationRessource {
 
     @PostMapping("/addLocation")
     public String addLocation(@RequestBody Location locations) {
-// location ->
+        if(locations.getIdPaie() != null) {
+            Paiement paiement = locations.getIdPaie();
+            Paiement paiementSaved = repositoryPaiement.save(paiement);
+            locations.setIdPaie(paiementSaved);
+        }
+        System.out.println(locations.getDateLoc()+ "bouuuuuuuuuuuuuuuuuuuuu");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+        //Date date = formatter.parse(date_loc);
+        System.out.println();
+        Utilise1 utilise1 = new Utilise1();
+        utilise1.setLocation(locations);
+        for ( Terrain terrain: locations.getTerrainCollection()) {
+            utilise1.setTerrain(terrain);
+        }
 
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//
-//            List<Terrain> terrainLouer = (List<Terrain>) repositoryTerrain.findByIdTerrain(locations.getTerrainCollection());
-//            for (int)
-//            List<Materiel> materielUtiliser = (List<Materiel>) repositoryMateriel.findByIdMat(locations.getIdLocation());
-//            Client clientLocation = repositoryClient.findByIdClient(locations.getIdClient().getIdClient());
-//            TypePaiement typePaiement= new TypePaiement();
-//            Paiement paiementLocation = new Paiement(locations.getMontantTotal(),locations.getDateLoc(), clientLocation,typePaiement);
-//
-//            if (terrainLouer != null && materielUtiliser != null && clientLocation != null && paiementLocation != null) {
-//                locations.setTerrainCollection(terrainLouer);
-//                locations.setMaterielCollection(materielUtiliser);
-//                locations.setIdClient(clientLocation);
-//                locations.setIdPaie(paiementLocation);
-//                repositoryPaiement.save(paiementLocation);
-//                repository.save(locations);
-//            } else {
-//                //throw new bussines exception to indicate that imposible to do this operation (Cest mn pote qui t'as ecris ici, tu dois rajouter un error exceptuion.... tu connais)
-//            }
-            return "ce client existe déjà";
+        Utilise2 utilise2 = new Utilise2();
+        utilise2.setLocation(locations);
+        for ( Materiel materiel: locations.getMaterielCollection()) {
+            utilise2.setMateriel(materiel);
+        }
+        repository.save(locations);
+        return "ce client existe déjà";
         }
 
     @GetMapping("/findAll")
     public Set<Location> findAll(){
-        Set<Location> location = locationService.findAll();
+        Set<Location> location = locationService.findAll(Sort.by(Sort.Direction.ASC, "id_location"));
         for(Location l:location){
             for (Materiel m:l.getMaterielCollection()
                  ) {
@@ -78,7 +76,7 @@ public class LocationRessource {
             }
             System.out.println(l.getMaterielCollection().size());
         }
-        return locationService.findAll();
+        return locationService.findAll(Sort.by(Sort.Direction.ASC, "date_loc"));
     }
 
 
@@ -98,23 +96,31 @@ public class LocationRessource {
     }
 
     @GetMapping("/findLocationByDate/{date_loc}")
-    public ResponseEntity<?>findLocationByDate(@PathVariable("date_loc") Date date_loc){
-        Location location;
+    public ResponseEntity<?>findLocationByDate(@PathVariable("date_loc") String date_loc) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+        Date date = formatter.parse(date_loc);
+        HashSet<Location> location;
+        System.out.println(date);
         try{
-            location = locationService.findLocationByDate(date_loc);
+            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            location = locationService.findLocationByDateLoc(date);
+            System.out.println(location + " ----------------------------------------------- ");
             if (location != null){
                 return new ResponseEntity<>(location, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Cette location n'existe pas !", HttpStatus.CONFLICT);
             }
         }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>("Error : " + e.getMessage(), HttpStatus.SEE_OTHER);
         }
+
+//        return null;
     }
 
 
     @GetMapping("/findLocationByDateAndHeureDebutAndFin/{dateLoc}/{heureDebut}/{heureFin}")
-    public ResponseEntity<?>findLocationByDateAndHeureDebutAndFin(@PathVariable("dateLoc") Date dateLoc, @PathVariable("heureDebut") Date heureDebut, @PathVariable("heureFin") Date heureFin){
+    public ResponseEntity<?>findLocationByDateAndHeureDebutAndFin(@PathVariable("dateLoc") Date dateLoc, @PathVariable("heureDebut") int heureDebut, @PathVariable("heureFin") int heureFin){
         Location location;
         try{
             location = locationService.findLocationByDateAndHeureDebutAndFin(dateLoc, heureDebut, heureFin);
@@ -170,6 +176,10 @@ public class LocationRessource {
 
     @DeleteMapping("/deleteLocation/{id_location}")
     public void deleteLocation(@PathVariable("id_location") Long id_location){
+        Location location = locationService.findLocationById(id_location);
+        if(location.getIdPaie() != null) {
+            paiementService.deletePaiement(location.getIdPaie().getIdPaie());
+        }
         locationService.deleteLocation(id_location);
     }
 }

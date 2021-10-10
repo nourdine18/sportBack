@@ -8,10 +8,10 @@ package be.businesstrainning.domaine;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 
 @Entity
@@ -28,6 +28,7 @@ public class Paiement implements Serializable {
     @NotNull
     @Column(name = "montant")
     private Integer montant;
+    @Null
     @Basic(optional = false)
     @Column(name = "date_paie")
     @Temporal(TemporalType.DATE)
@@ -41,7 +42,7 @@ public class Paiement implements Serializable {
     private TypePaiement idTypePaie;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "idPaie")
-    private Location locationCollection;
+    private Location location;
 
     public Paiement() {
     }
@@ -103,12 +104,12 @@ public class Paiement implements Serializable {
         this.idTypePaie = idTypePaie;
     }
 
-    public Location getLocationCollection() {
-        return locationCollection;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocationCollection(Location locationCollection) {
-        this.locationCollection = locationCollection;
+    public void setLocation(Location locationCollection) {
+        this.location = locationCollection;
     }
 
 //    @Override

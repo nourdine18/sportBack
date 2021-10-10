@@ -42,6 +42,11 @@ public class MaterielServiceImpl implements MaterielService{
         return materiel;
     }
 
+    @Override
+    public Materiel findMaterielById(Long id) {
+        Materiel materiel = iMaterielRepository.findByIdMat(id);
+        return materiel;
+    }
 
 
     @Override

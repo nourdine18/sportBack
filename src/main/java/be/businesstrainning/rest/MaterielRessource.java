@@ -61,6 +61,13 @@ public class MaterielRessource {
             return new ResponseEntity<>("Error : " + e.getMessage(), HttpStatus.SEE_OTHER);
         }
     }
+    @GetMapping("/findPrixUnitaireById/{id_materiel}")
+    public Long findPrixUnitaireById(@PathVariable("id_materiel") Long idMateriel){
+        Materiel mat = materielService.findMaterielById(idMateriel);
+        Long prix = Long.valueOf(mat.getPrixUnitaire());
+        System.out.println(prix);
+        return prix;
+    }
 
 
     @GetMapping("/findMaterielByFournisseur/{nom_mat}")

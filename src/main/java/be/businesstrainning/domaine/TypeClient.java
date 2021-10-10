@@ -58,6 +58,8 @@ public class TypeClient implements Serializable {
         this.idTypeClient = idTypeClient;
     }
 
+
+
     public TypeClient(Long idTypeClient, String nomTypeClient) {
         this.idTypeClient = idTypeClient;
         this.nomTypeClient = nomTypeClient;

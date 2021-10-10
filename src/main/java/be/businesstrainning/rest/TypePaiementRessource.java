@@ -42,6 +42,12 @@ public class TypePaiementRessource {
         }
     }
 
+    @GetMapping("findById/{idTypePaiement}")
+    public TypePaiement findTypePaiementById(@PathVariable("idTypePaiement") Long idTypePaiement){
+        System.out.println(idTypePaiement);
+        TypePaiement typePaiement = repository.findByIdTypePaie(idTypePaiement);
+        return typePaiement;
+    }
 
 
     @GetMapping("/findAll")

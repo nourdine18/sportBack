@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "utilise_2")
+@Table(name = "utilise_1")
 public class Utilise1 implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -30,7 +30,7 @@ public class Utilise2 implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantite")
-    private Integer quantite;
+    private int quantite;
     @JoinColumn(name = "id_location", referencedColumnName = "id_location", insertable = false, updatable = false)
     @JsonIgnore
     @ManyToOne(optional = false)
@@ -40,14 +40,21 @@ public class Utilise2 implements Serializable {
     @ManyToOne(optional = false)
     private Materiel materiel;
 
+
+
     public Utilise2() {
     }
 
-    public Utilise2(Utilise2PK utilise2PK) {
+
+
+    public Utilise2(Utilise2PK utilise2PK, Location location, Materiel materiel) {
+
         this.utilise2PK = utilise2PK;
+        this.location = location;
+        this.materiel = materiel;
     }
 
-    public Utilise2(Utilise2PK utilise2PK, Integer quantite) {
+    public Utilise2(Utilise2PK utilise2PK, int quantite) {
         this.utilise2PK = utilise2PK;
         this.quantite = quantite;
     }
@@ -64,11 +71,11 @@ public class Utilise2 implements Serializable {
         this.utilise2PK = utilise2PK;
     }
 
-    public Integer getQuantite() {
+    public int getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(Integer quantite) {
+    public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
 

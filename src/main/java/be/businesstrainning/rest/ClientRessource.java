@@ -44,20 +44,6 @@ public class ClientRessource {
         this.type_clientService = type_clientService;
     }
 
-//    @PostMapping(path = "/addClient")
-//    public ResponseEntity<?> addClient(@RequestBody Client clients){
-//        Client client = null;
-//        try {
-//            client = clientService.addClient(clients);
-//            if(client != null){
-//                return new ResponseEntity<>(client,HttpStatus.OK);
-//            } else{
-//                return new ResponseEntity<>("Ce client existe déjà dans la base de donnée !", HttpStatus.CONFLICT);
-//            }
-//        }catch (Exception e){
-//            return new ResponseEntity<>("Error : " + client + e.getMessage(), HttpStatus.SEE_OTHER);
-//        }
-//    }
 
 
     @PostMapping("/addClient")
@@ -139,7 +125,7 @@ public class ClientRessource {
         Client clientUpdated = clientService.updateClient(client);
         return new ResponseEntity<>(clientUpdated, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Ce client n'existe pas", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ce client n'existe pas", HttpStatus.BAD_REQUEST);
         }
     }
 
